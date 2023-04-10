@@ -1,0 +1,19 @@
+version: "3"
+services:
+  api:
+    build:
+      context: ./src
+      args:
+        ENVIRONMENT: DEVELOPMENT
+    env_file: ./src/.env
+    ports:
+      - 127.0.0.1:${APP_PORT:-8000}:8000
+    volumes:
+      - ./src:/usr/src/app
+    entrypoint: ./docker-entrypoint.sh
+    command: "uvicorn sample_project.asgi:application --reload --host 0.0.0.0 --port ${APP_PORT:-8000}"
+#    depends_on:
+#      - db
+#      - frontend
+    restart: on-failure
+    platform: linux/amd64
